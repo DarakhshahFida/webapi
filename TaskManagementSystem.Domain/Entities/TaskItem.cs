@@ -1,23 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using TaskManagementSystem.Domain.Enums;
 
 namespace TaskManagementSystem.Domain.Entities
 {
+    /*
+     * Represents a task in the system.
+     */
     public class TaskItem
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string? Description { get; set; }
-        public DateTime DueDate { get; set; }
-        public string Priority { get; set; }  // use Priority enum
-        public string Status { get; set; } // use Status enum
-        public int? UserId { get; set; } //foreign key to User
-        public User? User { get; set; } //Navigation property to User
 
+        [Required]
+        public string? Title { get; set; }
+
+        public string? Description { get; set; }
+
+        [Required]
+        public DateTime DueDate { get; set; }
+
+        [Required]
+        public Priority Priority { get; set; }
+
+        [Required]
+        public Status Status { get; set; }
+
+        public int? UserId { get; set; }
+
+        public User? User { get; set; }
 
     }
 }

@@ -18,6 +18,7 @@ namespace TaskManagementSystem.Infrastructure.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
         public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user);

@@ -1,29 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TaskManagementSystem.Application.DTOs
 {
     public class UserDTO
     {
+        //general user information.
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
+
+        [Required]
+        public string? UserName { get; set; }
+
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string? Email { get; set; }
+
+        [Required]
+        public string? Role { get; set; }
     }
 
+    //For user registration.
     public class RegisterDTO
     {
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        [Required]
+        public string? UserName { get; set; }
+
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string? Email { get; set; }
+
+        [Required]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
+        public string? Password { get; set; }
     }
 
+    //For user login.
     public class LoginDTO
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string? Email { get; set; }
+
+        [Required]
+        public string? Password { get; set; }
     }
 }

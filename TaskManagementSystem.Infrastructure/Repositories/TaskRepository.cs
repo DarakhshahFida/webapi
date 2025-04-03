@@ -12,32 +12,25 @@ namespace TaskManagementSystem.Infrastructure.Repositories
         {
             _context = context;
         }
+        public async Task<IEnumerable<TaskItem>> GetAllAsync() => await _context.Tasks.ToListAsync();
 
-        public async Task<IEnumerable<TaskItem>> GetAllAsync()
-        {
+        public async Task<TaskItem> GetByIdAsync(int id) => await _context.Tasks.FindAsync();
 
-            return await _context.Tasks.ToListAsync();
-
-        }
-        public async Task<TaskItem> GetByIdAsync(int id)
-        {
-            return await _context.Tasks.FindAsync(id);
-        }
         public async Task<TaskItem> AddAsync(TaskItem taskItem)
         {
             await _context.Tasks.AddAsync(taskItem);
             await _context.SaveChangesAsync();
-
             return taskItem;
 
         }
+
         public async Task<TaskItem> UpdateAsync(TaskItem taskItem)
         {
             _context.Tasks.Update(taskItem);
             await _context.SaveChangesAsync();
-
             return taskItem;
         }
+
         public async Task DeleteAsync(int id)
         {
             var taskItem = await _context.Tasks.FindAsync(id);

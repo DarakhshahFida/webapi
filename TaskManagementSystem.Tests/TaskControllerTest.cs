@@ -17,8 +17,9 @@ namespace TaskManagementSystem.Tests
 
         public TaskControllerTests()
         {
+            //creates mock object of ITaskService so that we can simulate its behavior.
             _mockService = new Mock<ITaskService>();
-            _controller = new TaskController(_mockService.Object);
+            _controller = new TaskController(_mockService.Object); //Object =  gives the actual mocked instance of ITaskService
         }
 
         [Fact]
@@ -31,13 +32,13 @@ namespace TaskManagementSystem.Tests
                 new TaskDTO { Id = 2, Title = "Task 2", Description = "Description 2", DueDate = DateTime.UtcNow.AddDays(2), Priority = "Medium", Status = "Completed", UserId = 102 }
             };
 
-            // Mock the service method to return the tasks
+            // Mock the service method to return our predefined list - tasks
             _mockService.Setup(service => service.GetAllTasksAsync()).ReturnsAsync(tasks);
 
-            // Act: Call the controller method (ensure it's awaited)
+            // Act: Call the controller method
             var result = await _controller.GetAllTasks();
 
-            // Assert: Check if the result is OkObjectResult
+            // Assert: Check if the result is OkObjectResult -  (HTTP 200 OK response)
             var okResult = Assert.IsType<OkObjectResult>(result);
 
             // Extract the value and ensure it is of type List<TaskDTO>

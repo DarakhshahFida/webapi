@@ -37,7 +37,6 @@ namespace TaskManagementSystem.Controllers
         public async Task<IActionResult> AddTask(TaskDTO taskDTO)
         {
             var task = await _taskService.AddTaskAsync(taskDTO);
-            //return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, task);
             return Ok(task);
 
         }

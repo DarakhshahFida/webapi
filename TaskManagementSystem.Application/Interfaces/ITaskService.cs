@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManagementSystem.Application.DTOs;
+﻿using TaskManagementSystem.Application.DTOs;
 
 namespace TaskManagementSystem.Application.Interfaces
 {
+    //Defines business logic operations for tasks, decoupling application logic from data access
     public interface ITaskService
     {
         Task<IEnumerable<TaskDTO>> GetAllTasksAsync();

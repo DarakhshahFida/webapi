@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace TaskManagementSystem.Domain.CustomExceptions
 {
-    public class UserNotFoundException: Exception
+    /*
+     * Thrown when a user is not found.
+     */
+    public class UserNotFoundException: CustomException
     {
-        public UserNotFoundException(): base("User not found")
-        {
-        }
-        public UserNotFoundException(string? message) : base(message)
-        {
-        }
-        public UserNotFoundException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
+        public UserNotFoundException(string message)
+            : base(message, StatusCodes.Status404NotFound) { }
     }
 }

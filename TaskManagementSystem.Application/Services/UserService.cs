@@ -8,6 +8,7 @@ using TaskManagementSystem.Domain.CustomExceptions;
 
 namespace TaskManagementSystem.Application.Services
 {
+    // Manages user-related operations including authentication.
     public class UserService: IUserService
     {
         private readonly IUserRepository _userRepository;
@@ -23,72 +24,48 @@ namespace TaskManagementSystem.Application.Services
 
         public async Task<UserDTO> RegisterAsync(RegisterDTO registerDTO)
         {
-            try
+            if (string.IsNullOrEmpty(registerDTO.UserName) || 
+                string.IsNullOrEmpty(registerDTO.Email) || 
+                string.IsNullOrEmpty(registerDTO.Password))
             {
-                if (string.IsNullOrEmpty(registerDTO.UserName) || string.IsNullOrEmpty(registerDTO.Email) || string.IsNullOrEmpty(registerDTO.Password))
-                {
-                    throw new InvalidTaskDataException("Username, Email, and Password are required.");
-                }
-                var user = new User
-                {
-                    UserName = registerDTO.UserName,
-                    Email = registerDTO.Email,
-                    //PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDTO.Password),
-                    PasswordHash = registerDTO.Password,
-                    Role = "User"
+                throw new InvalidTaskDataException("Username, Email, and Password are required.");
+            }
+            var user = new User
+            {
+                UserName = registerDTO.UserName,
+                Email = registerDTO.Email,
+                //PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDTO.Password),
+                PasswordHash = registerDTO.Password,
+                Role = "User"
 
-                };
-                await _userRepository.AddAsync(user);
-                _logger.LogInformation("User registered successfully: {UserId}", user.Id);
-                return new UserDTO
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Role = user.Role
-                };
-            }
-            catch (InvalidTaskDataException)
+            };
+            await _userRepository.AddAsync(user);
+            _logger.LogInformation("User registered successfully: {UserId}", user.Id);
+            return new UserDTO
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while registering a new user: {UserName}", registerDTO.UserName);
-                throw new Exception("Failed to register user. Please try again later.");
-            }
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role
+            };
 
         }
         public async Task<bool> LoginAsync(LoginDTO loginDTO)
         {
-            try
+            var user = await _userRepository.GetByEmailAsync(loginDTO.Email) 
+                ?? throw new UserNotFoundException($"User with email {loginDTO.Email} not found.");
+            if (user.PasswordHash != loginDTO.Password)
             {
-                var user = await _userRepository.GetByEmailAsync(loginDTO.Email) ?? throw new UserNotFoundException($"User with email {loginDTO.Email} not found.");
-                if (user.PasswordHash != loginDTO.Password)
-                {
-                    throw new InvalidTaskDataException("Invalid password.");
-                }
-                //set up user authentication by using cookies to store the session ID directly in the user's browser.
-                var httpContext = _httpContextAccessor.HttpContext;
+                throw new InvalidTaskDataException("Invalid password.");
+            }
+            //set up user authentication by using cookies to store the session ID directly in the user's browser.
+            var httpContext = _httpContextAccessor.HttpContext;
 
-                //set a cookie with the user's id
-                httpContext.Response.Cookies.Append("UserId", user.Id.ToString());
+            //set a cookie with the user's id
+            httpContext.Response.Cookies.Append("UserId", user.Id.ToString());
+            _logger.LogInformation("User logged in successfully: {Email}", loginDTO.Email);
 
-                return true;
-            }
-            catch (UserNotFoundException)
-            {
-                throw;
-            }
-            catch (InvalidTaskDataException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while logging in user with email: {Email}", loginDTO.Email);
-                throw new Exception("Failed to log in. Please try again later.");
-            }
+            return true;
         }
     }
 }

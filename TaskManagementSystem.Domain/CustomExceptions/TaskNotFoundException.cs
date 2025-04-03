@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+
 
 namespace TaskManagementSystem.Domain.CustomExceptions
 {
-    public class TaskNotFoundException: Exception
+    /*
+     * Thrown when a task is not found.
+     */
+    public class TaskNotFoundException: CustomException
     {
-        public TaskNotFoundException() : base("Task not found")
-        {
-        }
-        public TaskNotFoundException(string message): base(message) { }
-
-        public TaskNotFoundException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
+        public TaskNotFoundException(string message) 
+            : base(message, StatusCodes.Status404NotFound) { }
     }
 }

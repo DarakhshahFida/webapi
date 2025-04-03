@@ -13,7 +13,7 @@ namespace TaskManagementSystem.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             //Register Application services
-            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<ITaskService, TaskService>(); //scoped > one instance per http request
             services.AddScoped<IUserService, UserService>();
 
             //Register AutoMapper
@@ -23,7 +23,7 @@ namespace TaskManagementSystem.DependencyInjection
         }
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
         {
-            //register DbContext
+            //register AppDbContext using SQL Server
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             //register repositories

@@ -1,17 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagementSystem.DependencyInjection;
+using TaskManagementSystem.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is missing.");
 builder.Services.AddInfrastructureServices(connectionString);
 builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,7 +21,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // Allow React frontend
+            policy.WithOrigins("http://localhost:3000") // Allow React frontend to make API requests.
+
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials(); // Allow cookies/auth
@@ -40,6 +42,8 @@ app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

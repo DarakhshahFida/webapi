@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace TaskManagementSystem.Domain.CustomExceptions
 {
-    public class InvalidTaskDataException: Exception
+    /*
+     * Thrown when task data is invalid or incomplete
+     */
+    public class InvalidTaskDataException : CustomException
     {
-        public InvalidTaskDataException(): base("Invalid task data provided")
-        {
-        }
-        public InvalidTaskDataException(string? message) : base(message)
-        {
-        }
-        public InvalidTaskDataException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
+        public InvalidTaskDataException(string message)
+            : base(message, StatusCodes.Status400BadRequest ){ }
     }
 }

@@ -28,7 +28,7 @@ namespace TaskManagementSystem.Controllers
             var isLoggedIn = await _userService.LoginAsync(loginDTO);
             if (!isLoggedIn)
             {
-                return Unauthorized("Invalid Email or Password");
+                return Unauthorized("Invalid Email or Password"); //401 Unauthorized
             }
             return Ok("Logged in successfully");
         }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManagementSystem.Domain.Entities;
+﻿using TaskManagementSystem.Domain.Entities;
 
 namespace TaskManagementSystem.Domain.Interfaces
 {
+    /*
+     * Abstraction for task-related data access operations.
+     */
     public interface ITaskRepository
     {
         Task<IEnumerable<TaskItem>> GetAllAsync();
