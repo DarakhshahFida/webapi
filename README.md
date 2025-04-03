@@ -1,19 +1,5 @@
 # Task Management System (Clean Architecture)
-![image](https://github.com/user-attachments/assets/ec9c9f85-5836-4af2-9179-8978a1ee6ce3)
-*(Example Clean Architecture Diagram)*
-
 A task management system built using **Clean Architecture** principles with **ASP.NET Core**, **Entity Framework Core**, and **Domain-Driven Design (DDD)**.
-
-## Table of Contents
-- [Project Structure](#project-structure)
-  - [Key Principles](#key-principles)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Running the Application](#running-the-application)
-- [Testing](#testing)
-- [API Endpoints](#api-endpoints)
 
   ---
 
@@ -64,8 +50,8 @@ TaskManagementSystem/
    cd webapi
    ```
 2. **Set up the database**:
-    i. Update the connection string in appsettings.json.
-    ii. **Run migrations**:
+    1. Update the connection string in appsettings.json.
+    2. **Run migrations**:
         Open Package Manager Console:
             ```
             add-migration "<comment>"
@@ -94,19 +80,17 @@ dotnet test
 
 ### Tasks Management
 
-| Method   | Endpoint             | Description          | Request Body |
-|----------|----------------------|----------------------|--------------|
-| `GET`    | `/api/task`          | Get all tasks       | -            |
-| `GET`    | `/api/task/{id}`     | Get task by ID      | -            |
-| `POST`   | `/api/task`          | Create new task     |```{ "title": "string", "description": "string", "dueDate": "YYYY-MM-DD", "priority": "string", "status": "string", "userId": int }``` |
-| `PUT`    | `/api/task/{id}`     | Update existing task | ```{ "id": int, "title": "string", "description": "string", "dueDate": "YYYY-MM-DD", "priority": "string", "status": "string", "userId": int }``` |
-| `DELETE` | `/api/task/{id}`     | Delete task         | -            |
-
----
+| Method   | Endpoint             | Description          |
+|----------|----------------------|----------------------|
+| `GET`    | `/api/task`          | Get all tasks       |
+| `GET`    | `/api/task/{id}`     | Get task by ID      |
+| `POST`   | `/api/task`          | Create new task     |
+| `PUT`    | `/api/task/{id}`     | Update existing task |
+| `DELETE` | `/api/task/{id}`     | Delete task         |
 
 ### Authentication
 
-| Method   | Endpoint               | Description        | Request Body |
-|----------|------------------------|--------------------|--------------|
-| `POST`   | `/api/auth/register`   | Register new user | ```{ "userName": "string", "email": "string", "password": "string" }``` |
-| `POST`   | `/api/auth/login`      | User login        | ```{ "email": "string", "password": "string" }``` |
+| Method   | Endpoint               | Description        |
+|----------|------------------------|--------------------|
+| `POST`   | `/api/auth/register`   | Register new user |
+| `POST`   | `/api/auth/login`      | User login        |
